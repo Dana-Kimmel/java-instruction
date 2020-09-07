@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+public class StringApp {
+
+	public static void main(String[] args) {
+		System.out.println("Welcome to the String App!");
+
+		String firstName = "Bob";
+		String lastName = "Marley";
+
+		System.out.println("Hello, " + firstName + " " + lastName);
+
+		String fullName = firstName;
+		fullName = fullName + " ";
+		fullName += lastName;
+		System.out.println("fullName = " + fullName);
+
+		System.out.println("This is a sentence that\n" + "is on 2 lines");
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("Enter a name: ");
+		String name = sc.next();
+		System.out.println("You entered: " + "" + name);
+
+		System.out.print("Enter a whole number: ");
+		int i = sc.nextInt();
+		System.out.println("you entered: " + i);
+
+		System.out.print("Enter a decimal number: ");
+		double d = sc.nextDouble();
+		System.out.println("you entered: " + d);
+
+		// use relational operators
+		if (i > 10) {
+			System.out.println("i is greater than 10!");
+
+		}
+
+		// while loop
+		System.out.println("Do you want to continue? (y/n)");
+		String choice = sc.next();
+		while (choice.equalsIgnoreCase("y")) {
+			System.out.println("User wants to continue!!!!");
+			System.out.println("Continue? (y/n)");
+			choice = sc.next();
+		}
+
+		System.out.println("Bye");
+
+	}
+
+}
