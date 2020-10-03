@@ -31,6 +31,7 @@ public class MonthSelectorApp {
 		while (choice.equalsIgnoreCase("y")) {
 			// get the input from the user
 			int monthNumber = Console.getInt("Enter month number: ");
+			// adjusts user input -1 as in Jan = 1 now instead of the array value of 0
 			monthNumber--;
 			// validate input
 			if (monthNumber < 0 || monthNumber > monthNames.length) {
@@ -40,6 +41,7 @@ public class MonthSelectorApp {
 
 			// get the index number for the month
 			// and display the month name and sales
+
 			System.out.println("Sales for " + monthNames[monthNumber] + currency.format(monthSales[monthNumber]));
 			// check if the user wants to continue
 			choice = Console.getString("Continue? (y/n): ");
