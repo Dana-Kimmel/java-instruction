@@ -1,3 +1,4 @@
+package yourLast.Name.presentation;
 import java.util.Scanner;
 
 public class Console {

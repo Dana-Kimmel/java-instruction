@@ -1,3 +1,7 @@
+package yourLastName.account;
+import yourLastName.interfaces.Balanceable;
+import yourLastName.interfaces.Depositable;
+import yourLastName.interfaces.Withdrawable;
 
 public class Account implements Depositable, Withdrawable, Balanceable {
 

@@ -1,3 +1,4 @@
+package yourLastName.interfaces;
 
 public interface Balanceable {
 	double getBalance();

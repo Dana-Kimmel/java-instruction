@@ -25,4 +25,7 @@ public class Rectangle extends Square {
 		return this.getWidth() * height;
 	}
 
+	public double getPerimeter() {
+		return 2 * (this.getWidth() + height);
+	}
 }

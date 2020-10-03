@@ -47,11 +47,16 @@ public class MonthSelectorApp {
 		}
 
 		// display the total sales for the year
-		double totalSales = 0.0;
-		for (int i = 0; i < monthSales.length; i++) {
-			totalSales += monthSales[i];
+		// double totalSales = 0.0;
+		// for (int i = 0; i < monthSales.length; i++) {
+		// totalSales += monthSales[i];
+		// }
+
+		double totalSale = 0.0;
+		for (double totalSales : monthSales) {
+			totalSale += totalSales;
 		}
-		System.out.println("Total sales: " + currency.format(totalSales));
+		System.out.println("Total sales: " + currency.format(totalSale));
 		Console.displayLine();
 	}
 

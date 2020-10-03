@@ -1,4 +1,4 @@
-
+package yourLastName.account;
 public class CheckingAccount extends Account {
 
 	// fields

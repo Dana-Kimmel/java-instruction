@@ -23,4 +23,9 @@ public class Circle extends Shape {
 		double area = Math.PI * radius * radius;
 		return area;
 	}
+
+	public double getPerimeter() {
+		return Math.PI * (2 * radius);
+
+	}
 }

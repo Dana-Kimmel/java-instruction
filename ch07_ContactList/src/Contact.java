@@ -9,10 +9,12 @@ public class Contact {
 
 	// constructors
 	public Contact() {
-		this.firstName = "";
-		this.lastName = "";
-		this.contactEmail = "";
-		this.phoneNumber = "";
+		this("", "", "", "");
+
+		// firstName = "";
+		// lastName = "";
+		// contactEmail = "";
+		// phoneNumber = "";
 	}
 
 	public Contact(String firstName, String lastName, String contactEmail, String phoneNumber) {

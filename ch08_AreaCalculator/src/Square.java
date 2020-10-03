@@ -22,4 +22,8 @@ public class Square extends Shape {
 		// or Math.pow(width, 2.0);
 	}
 
+	public double getPerimeter() {
+		return 4 * width;
+	}
+
 }
