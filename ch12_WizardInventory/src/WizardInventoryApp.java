@@ -46,8 +46,10 @@ public class WizardInventoryApp {
 	}
 
 	public static void showAll(ArrayList<String> wizardItems) {
+		int itemCounter = 1;
 		for (String wizardItem : wizardItems) {
-			System.out.println(wizardItem);
+			System.out.println(itemCounter++ + ".  " + wizardItem);
+
 		}
 	}
 
