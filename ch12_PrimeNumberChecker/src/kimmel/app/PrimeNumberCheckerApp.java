@@ -28,7 +28,7 @@ public class PrimeNumberCheckerApp {
 				}
 			}
 			if (numToCheck == 1 || factors.size() == 2) {
-				System.out.println(numToCheck + " is a prime number 1");
+				System.out.println(numToCheck + " is a prime number");
 
 			} else {
 				System.out.println(numToCheck + " is NOT prime.");
