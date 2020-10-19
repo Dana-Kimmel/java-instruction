@@ -57,13 +57,13 @@ public final class CustomerTextFile implements DAO<Customer> {
 	}
 
 	@Override
-	public Customer get(String email) throws IOException {
+	public Customer get(String email) throws IOException, NoSuchCustomerException {
 		for (Customer c : customers) {
 			if (c.getEmail().equals(email)) {
 				return c;
 			}
 		}
-		return null;
+		throw new NoSuchCustomerException();
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public final class CustomerTextFile implements DAO<Customer> {
 	}
 
 	@Override
-	public boolean update(Customer newCustomer) throws IOException {
+	public boolean update(Customer newCustomer) throws IOException, NoSuchCustomerException {
 		// get the old customer and remove it
 		Customer oldCustomer = this.get(newCustomer.getEmail());
 		int i = customers.indexOf(oldCustomer);

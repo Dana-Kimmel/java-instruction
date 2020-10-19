@@ -102,6 +102,8 @@ public class CustomerManagerApp {
 		} catch (IOException e) {
 			System.out.println("Error retrieving customer");
 			return;
+		} catch (NoSuchCustomerException e) {
+			System.out.println("No such customer exists.");
 		}
 		System.out.println();
 		if (c != null) {
@@ -112,8 +114,6 @@ public class CustomerManagerApp {
 				return;
 			}
 			System.out.println(c.getName() + " has been deleted.\n");
-		} else {
-			System.out.println("No customer matches that email.\n");
 		}
 	}
 }
