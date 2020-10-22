@@ -63,7 +63,7 @@ public final class CustomerTextFile implements DAO<Customer> {
 				return c;
 			}
 		}
-		throw new NoSuchCustomerException();
+		throw new NoSuchCustomerException("Customer with this email: " + email + " cannot be found");
 	}
 
 	@Override

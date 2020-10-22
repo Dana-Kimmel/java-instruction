@@ -2,6 +2,7 @@ package bmdb.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,24 +56,105 @@ public class ActorDb {
 
 	}
 
-	public Actor get(String lastName) {
+	public Actor getActorByLastName(String lastName) {
 
-		String actorSelect = "SELECT * FROM ACTOR WHERE LastName ='" + lastName + "'";
-		try (Connection con = getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet actors = stmt.executeQuery(actorSelect);) {
+		String actorSelect = "SELECT * FROM ACTOR WHERE LastName = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(actorSelect);) {
+
+			ps.setString(1, lastName);
+			ResultSet actors = ps.executeQuery();
 
 			if (actors.next()) {
 				Actor actor = getActorFromResultSet(actors);
 
+				actors.close();
+
 				return actor;
 			} else {
+				actors.close();
 				return null;
 			}
 
 		} catch (SQLException e) {
 			System.err.println("Caught exception. " + e);
 			return null;
+		}
+
+	}
+
+	public Actor get(long id) {
+
+		String actorSelect = "SELECT * FROM ACTOR WHERE ID = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(actorSelect);) {
+
+			ps.setLong(1, id);
+			ResultSet actors = ps.executeQuery();
+
+			if (actors.next()) {
+				Actor actor = getActorFromResultSet(actors);
+				actors.close();
+				return actor;
+			} else {
+				actors.close();
+				return null;
+			}
+
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return null;
+		}
+
+	}
+
+	public boolean add(Actor actor) {
+		String actorInsert = "INSERT INTO actor(FirstName, LastName, Gender, BirthDate) VALUES (? ,? , ? , ?)";
+
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(actorInsert)) {
+			ps.setString(1, actor.getFirstName());
+			ps.setString(2, actor.getLastName());
+			ps.setString(3, actor.getGender());
+			ps.setString(4, actor.getBirthDate().toString());
+
+			ps.executeUpdate();
+
+			return true;
+
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return false;
+		}
+
+	}
+
+	public boolean delete(long id) {
+		String actorDelete = "DELETE FROM actor WHERE ID = ?;";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(actorDelete)) {
+			ps.setLong(1, id);
+
+			ps.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return false;
+		}
+
+	}
+
+	public boolean update(Actor actor) {
+		String actorUpdate = "UPDATE actor SET FirstName = ?, LastName = ?, Gender = ?, BirthDate = ? , WHERE ID = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(actorUpdate)) {
+			ps.setString(1, actor.getFirstName());
+			ps.setString(2, actor.getLastName());
+			ps.setString(3, actor.getGender());
+			ps.setString(4, actor.getBirthDate().toString());
+
+			ps.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return false;
 		}
 
 	}

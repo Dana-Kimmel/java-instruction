@@ -103,7 +103,7 @@ public class CustomerManagerApp {
 			System.out.println("Error retrieving customer");
 			return;
 		} catch (NoSuchCustomerException e) {
-			System.out.println("No such customer exists.");
+			System.out.println(e.getMessage());
 		}
 		System.out.println();
 		if (c != null) {
