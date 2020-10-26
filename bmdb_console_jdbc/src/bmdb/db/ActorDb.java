@@ -148,6 +148,7 @@ public class ActorDb {
 			ps.setString(2, actor.getLastName());
 			ps.setString(3, actor.getGender());
 			ps.setString(4, actor.getBirthDate().toString());
+			ps.setLong(5, actor.getId());
 
 			ps.executeUpdate();
 

@@ -3,6 +3,7 @@ package bmdb.db;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -59,17 +60,21 @@ public class MovieDb {
 
 	public Movie get(String title) {
 
-		String titleSelect = "SELECT * FROM MOVIE WHERE Title ='" + title + "'";
+		String titleSelect = "SELECT * FROM MOVIE WHERE Title = ?";
 
-		try (Connection con = getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet movies = stmt.executeQuery(titleSelect);) {
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(titleSelect)) {
+
+			ps.setString(1, title);
+			ResultSet movies = ps.executeQuery();
 
 			if (movies.next()) {
 				Movie movie = getMovieFromResultSet(movies);
 
+				movies.close();
 				return movie;
 			} else {
+
+				movies.close();
 				return null;
 			}
 
@@ -79,4 +84,79 @@ public class MovieDb {
 		}
 	}
 
+	public Movie get(long id) {
+		String movieSelect = "SELECT * FROM MOVIE WHERE ID = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(movieSelect)) {
+
+			ps.setLong(1, id);
+			ResultSet movies = ps.executeQuery();
+
+			if (movies.next()) {
+				Movie movie = getMovieFromResultSet(movies);
+
+				movies.close();
+
+				return movie;
+			} else {
+				movies.close();
+
+				return null;
+			}
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return null;
+		}
+	}
+
+	public boolean add(Movie movie) {
+		String movieInsert = "INSERT INTO movie(ID, Title, Year, Rating, Director) VALUES (?, ?, ?, ?, ?)";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(movieInsert)) {
+			ps.setLong(1, movie.getId());
+			ps.setString(2, movie.getTitle());
+			ps.setLong(3, movie.getYear());
+			ps.setString(4, movie.getRating());
+			ps.setString(5, movie.getDirector());
+
+			ps.executeUpdate();
+
+			return true;
+
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return false;
+		}
+
+	}
+
+	public boolean delete(long id) {
+		String movieDelete = "DELETE FROM movie WHERE ID = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(movieDelete)) {
+			ps.setLong(1, id);
+
+			ps.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return false;
+		}
+	}
+
+	public boolean update(Movie movie) {
+		String movieUpdate = "UPDATE actor SET WHERE ID = ?, Title = ?, Year = ?, Rating = ?, Director = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(movieUpdate)) {
+			ps.setLong(1, movie.getId());
+			ps.setString(2, movie.getTitle());
+			ps.setLong(3, movie.getYear());
+			ps.setString(4, movie.getRating());
+			ps.setString(5, movie.getDirector());
+
+			ps.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			System.err.println("Caught exception. " + e);
+			return false;
+		}
+	}
 }
