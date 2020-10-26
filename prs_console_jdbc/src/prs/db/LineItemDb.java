@@ -15,6 +15,10 @@ import prs.exception.PrsDataException;
 
 public class LineItemDb {
 
+	public LineItemDb() {
+
+	}
+
 	private Connection getConnection() throws SQLException {
 		String dbURL = "jdbc:mysql://localhost:3306/prs?useSSL=false&allowPublicKeyRetrieval=true";
 		String username = "prs_user";
@@ -102,7 +106,7 @@ public class LineItemDb {
 	}
 
 	public boolean updateLineItem(LineItem lineItem) {
-		String lineItemUpdate = "UPDATE lineItem SET RequestID = ?, ProductID = ?, Quantity = ?, WHERE ID = ? ";
+		String lineItemUpdate = "UPDATE lineItem SET RequestID = ?, ProductID = ?, Quantity = ? WHERE ID = ? ";
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(lineItemUpdate)) {
 
 			ps.setInt(1, lineItem.getRequestId());
