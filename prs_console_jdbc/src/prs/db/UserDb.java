@@ -28,6 +28,15 @@ public class UserDb {
 		return connection;
 	}
 
+	/**
+	   * Authenticates a User
+	   *
+	   * @param userName The user's userName
+	   * @param password The user's password
+	   * @returns The matching User or null if no matching User found
+	   */
+    public User authenticateUser(String userName, String password) { ... }
+
 	private User getUserFromResultSet(ResultSet rs) throws SQLException {
 
 		int id = rs.getInt("ID");
@@ -104,6 +113,7 @@ public class UserDb {
 			ps.setString(6, user.getEmail());
 			ps.setBoolean(7, user.isReviewer());
 			ps.setBoolean(8, user.isAdmin());
+
 			ps.executeUpdate();
 
 			return true;
@@ -116,7 +126,7 @@ public class UserDb {
 	}
 
 	public boolean updateUser(User user) {
-		String userUpdate = "UPDATE user SET UserName = ?, Password = ?, FirstName = ?, LastName= ?, PhoneNumber = ?, Email =?, IsReviewer=?, IsAdmin =?,  WHERE ID = ? ";
+		String userUpdate = "UPDATE user SET UserName = ?, Password = ?, FirstName = ?, LastName= ?, PhoneNumber = ?, Email =?, IsReviewer=?, IsAdmin =?  WHERE ID = ? ";
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(userUpdate)) {
 
 			ps.setString(1, user.getUserName());
@@ -127,7 +137,7 @@ public class UserDb {
 			ps.setString(6, user.getEmail());
 			ps.setBoolean(7, user.isReviewer());
 			ps.setBoolean(8, user.isAdmin());
-			ps.setInt(8, user.getId());
+			ps.setInt(9, user.getId());
 
 			ps.executeUpdate();
 

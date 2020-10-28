@@ -66,7 +66,7 @@ public class ProductDb {
 
 	public Product getProductById(int id) {
 
-		String productSelect = "SELECT * FROM PRODUCT WHERE ID = ?";
+		String productSelect = "SELECT * FROM Product WHERE ID = ?";
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(productSelect);) {
 
 			ps.setInt(1, id);
@@ -112,7 +112,7 @@ public class ProductDb {
 	}
 
 	public boolean updateProduct(Product product) {
-		String productUpdate = "UPDATE product SET VendorID = ?, PartNumber = ?, Name = ?, Price = ?, Unit = ?, PhotoPath =?, WHERE ID = ? ";
+		String productUpdate = "UPDATE product SET VendorID = ?, PartNumber = ?, Name = ?, Price = ?, Unit = ?, PhotoPath =? WHERE ID = ? ";
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(productUpdate)) {
 
 			ps.setInt(1, product.getVendorId());

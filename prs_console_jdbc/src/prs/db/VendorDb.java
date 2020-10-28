@@ -137,7 +137,7 @@ public class VendorDb {
 		}
 	}
 
-	public boolean vendorProduct(int id) {
+	public boolean deleteVendor(int id) {
 		String vendorDelete = "DELETE FROM Vendor WHERE ID = ?;";
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(vendorDelete)) {
 			ps.setInt(1, id);

@@ -47,7 +47,7 @@ public class BmdbApp {
 				break;
 
 			case "aa":
-				addActor(actorDb);
+				addActor();
 				break;
 
 			case "da":
@@ -162,27 +162,28 @@ public class BmdbApp {
 		}
 	}
 
-private static void addActor(actorDb) {
-	
-	String firstName = Console.getString("First name: ");
-	String lastName = Console.getString("Last Name: ");
-	String gender = Console.getString("Gender: ");
-	String birthDateStr = Console.getString("Birthdate (YYYY-MM-DD");
-	LocalDate birthDate = LocalDate.parse(newBirthDateStr);
+	static ActorDb actorDb = new ActorDb();
 
-	Actor newActor = new Actor(0, firstName, lastName, gender, birthDate);
+	private static void addActor() {
 
-	if (actorDb.add(actor)) {
-		System.out.println("Actor added successfully");
+		String firstName = Console.getString("First name: ");
+		String lastName = Console.getString("Last Name: ");
+		String gender = Console.getString("Gender: ");
+		String birthDateStr = Console.getString("Birthdate (YYYY-MM-DD");
+		LocalDate birthDate = LocalDate.parse(birthDateStr);
 
-	} else {
-		System.out.println("Error adding actor");
+		Actor newActor = new Actor(0, firstName, lastName, gender, birthDate);
+
+		if (actorDb.add(newActor)) {
+			System.out.println("Actor added successfully");
+
+		} else {
+			System.out.println("Error adding actor");
+		}
+
 	}
 
-	
-}
-
-	private static void updateActor();
+	private static void updateActor()
 
 	{
 		long updId = Console.getInt("ID: ");
