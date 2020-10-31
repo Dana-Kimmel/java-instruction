@@ -5,6 +5,7 @@ import java.util.List;
 
 import prs.business.LineItem;
 import prs.business.Product;
+import prs.business.User;
 import prs.business.Vendor;
 import prs.db.LineItemDb;
 import prs.db.ProductDb;
@@ -19,7 +20,12 @@ public class PrsApp {
 		System.out.println("Welcome to the PRS App");
 		System.out.println();
 
-		// add a variable of type User called authenticatedUser and initialize to null
+		User authenticatedUser = null;
+		UserDb userDb = new UserDb();
+
+		while (authenticatedUser == null) {
+			authenticatedUser = authenticateUser(userDb);
+		}
 
 		// Add a "login" command that prompts the user for an ID and password
 		// Add a "logout" command that sets authenticatedUser to null
@@ -64,6 +70,12 @@ public class PrsApp {
 		System.out.println("exit - Exit the application");
 		System.out.println();
 
+		ProductDb productDb = new ProductDb();
+		LineItemDb lineItemDb = new LineItemDb();
+		VendorDb vendorDb = new VendorDb();
+
+		RequestDb requestDb = new RequestDb();
+
 		String command = "";
 		while (!command.equalsIgnoreCase("exit")) {
 			command = Console.getString("Enter command: ");
@@ -73,7 +85,7 @@ public class PrsApp {
 			// ***** Product case *****
 
 			case "prod_la":
-				listProducts();
+				listProducts(productDb);
 				break;
 
 			case "prod_id":
@@ -152,19 +164,24 @@ public class PrsApp {
 
 	}
 
-	private static ProductDb productDb = new ProductDb();
-	private static LineItemDb lineItemDb = new LineItemDb();
-	private static VendorDb vendorDb = new VendorDb();
-	private static UserDb userDb = new UserDb();
-	private static RequestDb requestDb = new RequestDb();
-
 	// ********* add Login Method
 	// *************************************************************************************
-	//
+	private static User authenticateUser(UserDb userDb) {
+
+		String username = Console.getString("Username: ");
+		String password = Console.getString("Password: ");
+
+		User user = userDb.authenticateUser(username, password);
+
+		if (user == null) {
+			System.out.println("Incorrect entry");
+		}
+		return user;
+	}
 
 	// *********** Product
 	// *******************************************************************************************************************
-	private static void listProducts() {
+	private static void listProducts(ProductDb productDb) {
 		try {
 
 			List<Product> products = productDb.getAll();

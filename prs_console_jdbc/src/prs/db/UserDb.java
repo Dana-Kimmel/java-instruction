@@ -29,13 +29,12 @@ public class UserDb {
 	}
 
 	/**
-	   * Authenticates a User
-	   *
-	   * @param userName The user's userName
-	   * @param password The user's password
-	   * @returns The matching User or null if no matching User found
-	   */
-    public User authenticateUser(String userName, String password) { ... }
+	 * Authenticates a User
+	 *
+	 * @param userName The user's userName
+	 * @param password The user's password
+	 * @returns The matching User or null if no matching User found
+	 */
 
 	private User getUserFromResultSet(ResultSet rs) throws SQLException {
 
@@ -51,6 +50,33 @@ public class UserDb {
 
 		User user = new User(id, userName, password, firstName, lastName, phoneNumber, email, isReviewer, isAdmin);
 		return user;
+
+	}
+
+	public User authenticateUser(String username, String password) {
+
+		String authenticateUser = "SELECT * From User WHERE UserName = ? AND Password = ?";
+
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(authenticateUser);) {
+
+			ps.setString(1, username);
+			ps.setString(2, password);
+
+			ResultSet users = ps.executeQuery();
+
+			if (users.next()) {
+				User user = getUserFromResultSet(users);
+				users.close();
+				return user;
+			} else {
+				users.close();
+				return null;
+			}
+
+		} catch (SQLException e) {
+			throw new PrsDataException("Error retrieving user. Msg: " + e.getMessage());
+
+		}
 
 	}
 
