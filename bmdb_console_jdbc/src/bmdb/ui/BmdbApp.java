@@ -47,7 +47,7 @@ public class BmdbApp {
 				break;
 
 			case "aa":
-				addActor();
+				addActor(actorDb);
 				break;
 
 			case "da":
@@ -162,9 +162,7 @@ public class BmdbApp {
 		}
 	}
 
-	static ActorDb actorDb = new ActorDb();
-
-	private static void addActor() {
+	private static void addActor(ActorDb adb) {
 
 		String firstName = Console.getString("First name: ");
 		String lastName = Console.getString("Last Name: ");
@@ -174,7 +172,7 @@ public class BmdbApp {
 
 		Actor newActor = new Actor(0, firstName, lastName, gender, birthDate);
 
-		if (actorDb.add(newActor)) {
+		if (adb.add(newActor)) {
 			System.out.println("Actor added successfully");
 
 		} else {

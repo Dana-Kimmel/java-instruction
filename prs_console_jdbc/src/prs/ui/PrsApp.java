@@ -23,13 +23,6 @@ public class PrsApp {
 		User authenticatedUser = null;
 		UserDb userDb = new UserDb();
 
-		while (authenticatedUser == null) {
-			authenticatedUser = authenticateUser(userDb);
-		}
-
-		// Add a "login" command that prompts the user for an ID and password
-		// Add a "logout" command that sets authenticatedUser to null
-
 		System.out.println("COMMANDS:");
 
 		// Product commands
@@ -80,86 +73,101 @@ public class PrsApp {
 		while (!command.equalsIgnoreCase("exit")) {
 			command = Console.getString("Enter command: ");
 
-			switch (command.toLowerCase()) {
+			if (command.equalsIgnoreCase("login")) {
+				authenticatedUser = authenticateUser(userDb);
 
-			// ***** Product case *****
+				if (authenticatedUser == null) {
+					System.out.println("Username/password not found");
+				} else {
+					System.out.println("Welcome, " + authenticatedUser.getFirstName());
+				}
 
-			case "prod_la":
-				listProducts(productDb);
-				break;
+			} else if (command.equalsIgnoreCase("logout")) {
+				authenticatedUser = null;
+			} else if (authenticatedUser != null) {
 
-			case "prod_id":
-				getProductById();
-				break;
+				switch (command.toLowerCase()) {
 
-			case "prod_ap":
-				addProduct();
-				break;
+				// ***** Product case *****
 
-			case "prod_up":
-				updateProduct();
-				break;
+				case "prod_la":
+					listProducts(productDb);
+					break;
 
-			case "prod_dp":
-				deleteProduct();
-				break;
-			// ***** LineItem case *****
+				case "prod_id":
+					getProductById(productDb);
+					break;
 
-			case "line_la":
-				listLineItems();
-				break;
+				case "prod_ap":
+					addProduct(productDb);
+					break;
 
-			case "line_id":
-				getLineItemById();
-				break;
+				case "prod_up":
+					updateProduct(productDb);
+					break;
 
-			case "line_al":
-				addLineItem();
-				break;
+				case "prod_dp":
+					deleteProduct(productDb);
+					break;
+				// ***** LineItem case *****
 
-			case "line-ul":
-				updateLineItem();
-				break;
+				case "line_la":
+					listLineItems(lineItemDb);
+					break;
 
-			case "line_dl":
-				deleteLineItem();
+				case "line_id":
+					getLineItemById(lineItemDb);
+					break;
 
-				// ***** Vendor case *****
+				case "line_al":
+					addLineItem(lineItemDb);
+					break;
 
-			case "vend_la":
-				listVendors();
-				break;
+				case "line-ul":
+					updateLineItem(lineItemDb);
+					break;
 
-			case "vend_id":
-				getVendorById();
-				break;
+				case "line_dl":
+					deleteLineItem(lineItemDb);
 
-			case "vend_av":
-				addVendor();
-				break;
+					// ***** Vendor case *****
 
-			case "vend_uv":
-				updateVendor();
-				break;
+				case "vend_la":
+					listVendors(vendorDb);
+					break;
 
-			case "vend_dv":
-				deleteVendor();
-				break;
+				case "vend_id":
+					getVendorById(vendorDb);
+					break;
 
-			// ***** User case *****
+				case "vend_av":
+					addVendor(vendorDb);
+					break;
 
-			// ***** Request case *****
+				case "vend_uv":
+					updateVendor(vendorDb);
+					break;
 
-			case "exit":
-				// Nothing to do
-				break;
+				case "vend_dv":
+					deleteVendor(vendorDb);
+					break;
 
-			default:
-				System.out.println("Invalid command");
-				break;
+				// ***** User case *****
 
+				// ***** Request case *****
+
+				case "exit":
+					// Nothing to do
+					break;
+
+				default:
+					System.out.println("Invalid command");
+					break;
+
+				}
+			} else {
+				System.out.println("Must be logged in");
 			}
-
 		}
 
 	}
@@ -168,15 +176,21 @@ public class PrsApp {
 	// *************************************************************************************
 	private static User authenticateUser(UserDb userDb) {
 
-		String username = Console.getString("Username: ");
-		String password = Console.getString("Password: ");
+		try {
+			String userName = Console.getString("Username: ");
+			String password = Console.getString("Password: ");
 
-		User user = userDb.authenticateUser(username, password);
+			User user = userDb.authenticateUser(userName, password);
+			if (user == null) {
+				System.out.println("Incorrect entry");
 
-		if (user == null) {
-			System.out.println("Incorrect entry");
+			}
+			return user;
+		} catch (PrsDataException e) {
+			System.err.println("Error logging in. Msg: " + e.getMessage());
+			return null;
 		}
-		return user;
+
 	}
 
 	// *********** Product
@@ -196,7 +210,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void getProductById() {
+	private static void getProductById(ProductDb productDb) {
 		int productId = Console.getInt("Product's ID: ");
 		Product productById = productDb.getProductById(productId);
 		if (productById == null) {
@@ -206,7 +220,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void addProduct() {
+	private static void addProduct(ProductDb productDb) {
 
 		int vendorId = Console.getInt("Vendor ID: ");
 		String partNumber = Console.getString("Part number: ");
@@ -226,7 +240,7 @@ public class PrsApp {
 
 	}
 
-	private static void updateProduct() {
+	private static void updateProduct(ProductDb productDb) {
 
 		int vendorId = Console.getInt("Vendor ID: ");
 		String partNumber = Console.getString("Part number: ");
@@ -245,7 +259,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void deleteProduct() {
+	private static void deleteProduct(ProductDb productDb) {
 		int idToDelete = Console.getInt("Product ID to delete: ");
 		if (productDb.deleteProduct(idToDelete)) {
 			System.out.println("Product deleted");
@@ -257,9 +271,9 @@ public class PrsApp {
 	// *********** LineItem
 	// ************************************************************************************************************************
 
-	private static void listLineItems() {
+	private static void listLineItems(LineItemDb lineItemDb) {
 		try {
-			LineItemDb lineItemDb = new LineItemDb();
+
 			List<LineItem> lineItems = lineItemDb.getAll();
 			System.out.println("Line items:");
 			for (LineItem lineItem : lineItems) {
@@ -273,17 +287,17 @@ public class PrsApp {
 
 	}
 
-	private static void getLineItemById() {
+	private static void getLineItemById(LineItemDb lineItemDb) {
 		int lineItemId = Console.getInt("Line item's ID: ");
-		Product LineItemById = productDb.getProductById(lineItemId);
-		if (LineItemById == null) {
+		LineItem lineItemById = lineItemDb.getLineItemById(lineItemId);
+		if (lineItemById == null) {
 			System.out.println("No line item found");
 		} else {
-			System.out.println(LineItemById);
+			System.out.println(lineItemById);
 		}
 	}
 
-	private static void addLineItem() {
+	private static void addLineItem(LineItemDb lineItemDb) {
 		int requestId = Console.getInt("Request ID:");
 		int productId = Console.getInt("Product ID:");
 		int quantity = Console.getInt("Quantity:");
@@ -298,7 +312,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void updateLineItem() {
+	private static void updateLineItem(LineItemDb lineItemDb) {
 
 		int requestId = Console.getInt("Request ID: ");
 		int productId = Console.getInt("Product ID: ");
@@ -314,7 +328,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void deleteLineItem() {
+	private static void deleteLineItem(LineItemDb lineItemDb) {
 		int idToDelete = Console.getInt("Line item ID to delete: ");
 		if (lineItemDb.deleteLineItem(idToDelete)) {
 			System.out.println("Line item deleted");
@@ -326,7 +340,7 @@ public class PrsApp {
 	// *********** Vendor
 	// ***************************************************************************************************************************
 
-	private static void listVendors() {
+	private static void listVendors(VendorDb vendorDb) {
 		try {
 
 			List<Vendor> vendors = vendorDb.getAll();
@@ -341,7 +355,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void getVendorById() {
+	private static void getVendorById(VendorDb vendorDb) {
 		int vendorId = Console.getInt("Vendor's ID: ");
 		Vendor vendorById = vendorDb.getVendorById(vendorId);
 		if (vendorById == null) {
@@ -351,7 +365,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void addVendor() {
+	private static void addVendor(VendorDb vendorDb) {
 
 		String code = Console.getString("Code: ");
 		String name = Console.getString("Name: ");
@@ -372,7 +386,7 @@ public class PrsApp {
 		}
 	}
 
-	private static void updateVendor() {
+	private static void updateVendor(VendorDb vendorDb) {
 
 		String code = Console.getString("Code: ");
 		String name = Console.getString("Name: ");
@@ -394,7 +408,7 @@ public class PrsApp {
 
 	}
 
-	private static void deleteVendor() {
+	private static void deleteVendor(VendorDb vendorDb) {
 		int idToDelete = Console.getInt("Vendor ID to delete: ");
 		if (vendorDb.deleteVendor(idToDelete)) {
 			System.out.println("Product deleted");
