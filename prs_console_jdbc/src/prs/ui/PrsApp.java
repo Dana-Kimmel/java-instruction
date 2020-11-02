@@ -47,11 +47,11 @@ public class PrsApp {
 		System.out.println("vend_dv - Delete vendor");
 
 		// User commands
-		// list all users
-		// get user by id
-		// add userDb
-		// update user
-		// delete user
+		System.out.println("user_la - List all users");
+		System.out.println("user_id - Get user by ID");
+		System.out.println("user_au - Add user");
+		System.out.println("user_uu - Update user");
+		System.out.println("user_du - Delete user");
 
 		// Request commands
 		// list all requests
@@ -153,6 +153,26 @@ public class PrsApp {
 					break;
 
 				// ***** User case *****
+
+				case "user_la":
+					listUsers(userDb);
+					break;
+
+				case "user_id":
+					getUserById(userDb);
+					break;
+
+				case "user_au":
+					addUser(userDb);
+					break;
+
+				case "user_uu":
+					updateUser(userDb);
+					break;
+
+				case "user_du":
+					deleteUser(userDb);
+					break;
 
 				// ***** Request case *****
 
@@ -416,8 +436,82 @@ public class PrsApp {
 			System.out.println("Error deleting vendor");
 		}
 	}
+
 	// *********** User
 	// *****************************************************************************************************************************
+
+	private static void listUsers(UserDb userDb) {
+		try {
+
+			List<User> users = userDb.getAll();
+			System.out.println("Users:");
+			for (User user : users) {
+				System.out.println(user);
+			}
+			System.out.println();
+
+		} catch (PrsDataException e) {
+			System.err.println("Couldn't retrieve users. Msg: " + e.getMessage());
+		}
+	}
+
+	private static void getUserById(UserDb userDb) {
+		int userId = Console.getInt("User's ID: ");
+		User userById = userDb.getUserById(userId);
+		if (userById == null) {
+			System.out.println("No user item found");
+		} else {
+			System.out.println(userId);
+		}
+	}
+
+	private static void addUser(UserDb userDb) {
+
+		String userName = Console.getString("Username: ");
+		String password = Console.getString("Password: ");
+		String firstName = Console.getString("First name: ");
+		String lastName = Console.getString("Last name: ");
+		String phoneNumber = Console.getString("Phone number: ");
+		String email = Console.getString("Email: ");
+
+		User newUser = new User(0, userName, password, firstName, lastName, phoneNumber, email, false, false);
+
+		if (userDb.addUser(newUser)) {
+			System.out.println("User added successfully");
+
+		} else {
+			System.out.println("Error adding user");
+		}
+
+	}
+
+	private static void updateUser(UserDb userDb) {
+
+		String userName = Console.getString("Username: ");
+		String password = Console.getString("Password: ");
+		String firstName = Console.getString("First name: ");
+		String lastName = Console.getString("Last name: ");
+		String phoneNumber = Console.getString("Phone number: ");
+		String email = Console.getString("Email: ");
+
+		User newUser = new User(0, userName, password, firstName, lastName, phoneNumber, email, false, false);
+
+		if (userDb.updateUser(newUser)) {
+			System.out.println("User added successfully");
+
+		} else {
+			System.out.println("Error updating user");
+		}
+	}
+
+	private static void deleteUser(UserDb userDb) {
+		int idToDelete = Console.getInt("User ID to delete: ");
+		if (userDb.deleteUser(idToDelete)) {
+			System.out.println("User deleted");
+		} else {
+			System.out.println("Error deleting user");
+		}
+	}
 
 	// *********** Request
 	// **************************************************************************************************************************
