@@ -1,10 +1,12 @@
 package prs.ui;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import prs.business.LineItem;
 import prs.business.Product;
+import prs.business.Request;
 import prs.business.User;
 import prs.business.Vendor;
 import prs.db.LineItemDb;
@@ -24,6 +26,8 @@ public class PrsApp {
 		UserDb userDb = new UserDb();
 
 		System.out.println("COMMANDS:");
+
+		System.out.println("login   -  Must login to begin");
 
 		// Product commands
 		System.out.println("prod_la - List all products");
@@ -54,13 +58,13 @@ public class PrsApp {
 		System.out.println("user_du - Delete user");
 
 		// Request commands
-		// list all requests
-		// get request by id
-		// add request
-		// update request
-		// delete request
+		System.out.println("requ_la - List all requests");
+		System.out.println("requ_id - Get request by ID");
+		System.out.println("requ_ar - Add request");
+		System.out.println("requ_ur - Update request");
+		System.out.println("requ_dr - Delete request");
 
-		System.out.println("exit - Exit the application");
+		System.out.println("exit    - Exit the application");
 		System.out.println();
 
 		ProductDb productDb = new ProductDb();
@@ -87,6 +91,10 @@ public class PrsApp {
 			} else if (authenticatedUser != null) {
 
 				switch (command.toLowerCase()) {
+
+				case "login":
+					authenticateUser(userDb);
+					break;
 
 				// ***** Product case *****
 
@@ -175,6 +183,26 @@ public class PrsApp {
 					break;
 
 				// ***** Request case *****
+
+				case "requ_la":
+					listRequests(requestDb);
+					break;
+
+				case "requ_id":
+					getRequestById(requestDb);
+					break;
+
+				case "requ_ar":
+					addRequest(requestDb);
+					break;
+
+				case "requ_ur":
+					updateRequest(requestDb);
+					break;
+
+				case "requ_dr":
+					deleteRequest(requestDb);
+					break;
 
 				case "exit":
 					// Nothing to do
@@ -516,4 +544,86 @@ public class PrsApp {
 	// *********** Request
 	// **************************************************************************************************************************
 
+	private static void listRequests(RequestDb requestDb) {
+		try {
+
+			List<Request> requests = requestDb.getAll();
+			System.out.println("Requests:");
+			for (Request request : requests) {
+				System.out.println(request);
+			}
+			System.out.println();
+
+		} catch (PrsDataException e) {
+			System.err.println("Couldn't retrieve requests. Msg: " + e.getMessage());
+		}
+	}
+
+	private static void getRequestById(RequestDb requestDb) {
+		int requestId = Console.getInt("Request's ID: ");
+		Request requestById = requestDb.getRequestById(requestId);
+		if (requestById == null) {
+			System.out.println("No request found");
+		} else {
+			System.out.println(requestById);
+		}
+	}
+
+	private static void addRequest(RequestDb requestDb) {
+
+		int userId = Console.getInt("User ID: ");
+		String description = Console.getString("Description: ");
+		String justification = Console.getString("Justification: ");
+		String date = Console.getString("Date Needed (YYYY-MM-DD): ");
+		LocalDate dateNeeded = LocalDate.parse(date);
+		String deliveryMode = Console.getString("Delivery mode: ");
+		String status = Console.getString("Status: ");
+		double total = Console.getDouble("Total: ");
+		LocalDateTime submittedDate = LocalDateTime.now();
+		String reasonForRejection = Console.getString("Reason for rejection: ");
+
+		Request newRequest = new Request(0, userId, description, justification, dateNeeded, deliveryMode, status, total,
+				submittedDate, reasonForRejection);
+
+		if (requestDb.addRequest(newRequest)) {
+			System.out.println("Request added successfully");
+
+		} else {
+			System.out.println("Error adding request");
+		}
+
+	}
+
+	private static void updateRequest(RequestDb requestDb) {
+
+		int userId = Console.getInt("User ID: ");
+		String description = Console.getString("Description: ");
+		String justification = Console.getString("Justification: ");
+		String date = Console.getString("Date Needed (YYYY-MM-DD): ");
+		LocalDate dateNeeded = LocalDate.parse(date);
+		String deliveryMode = Console.getString("Delivery mode: ");
+		String status = Console.getString("Status: ");
+		double total = Console.getDouble("Total: ");
+		LocalDateTime submittedDate = LocalDateTime.now();
+		String reasonForRejection = Console.getString("Reason for rejection: ");
+
+		Request newRequest = new Request(0, userId, description, justification, dateNeeded, deliveryMode, status, total,
+				submittedDate, reasonForRejection);
+
+		if (requestDb.updateRequest(newRequest)) {
+			System.out.println("Request added successfully");
+
+		} else {
+			System.out.println("Error updating request");
+		}
+	}
+
+	private static void deleteRequest(RequestDb requestDb) {
+		int idToDelete = Console.getInt("Request ID to delete: ");
+		if (requestDb.deleteRequest(idToDelete)) {
+			System.out.println("Request deleted");
+		} else {
+			System.out.println("Error deleting request");
+		}
+	}
 }

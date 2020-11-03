@@ -103,11 +103,11 @@ public class RequestDb {
 			ps.setInt(1, request.getUserId());
 			ps.setString(2, request.getDescription());
 			ps.setString(3, request.getJustification());
-			ps.setLocalDate(4, request.getDateNeeded());
+			ps.setObject(4, request.getDateNeeded().toString());
 			ps.setString(5, request.getDeliveryMode());
 			ps.setString(6, request.getStatus());
 			ps.setDouble(7, request.getTotal());
-			ps.setLocalDateTime(8, request.getSubmittedDate());
+			ps.setString(8, request.getSubmittedDate().toString());
 			ps.setString(9, request.getReasonForRejection());
 
 			ps.executeUpdate();
@@ -128,11 +128,11 @@ public class RequestDb {
 			ps.setInt(1, request.getUserId());
 			ps.setString(2, request.getDescription());
 			ps.setString(3, request.getJustification());
-			ps.setLocalDate(4, request.getDateNeeded());
+			ps.setObject(4, request.getDateNeeded().toString());
 			ps.setString(5, request.getDeliveryMode());
 			ps.setString(6, request.getStatus());
 			ps.setDouble(7, request.getTotal());
-			ps.setLocalDateTime(8, request.getSubmittedDate());
+			ps.setString(8, request.getSubmittedDate().toString());
 			ps.setString(9, request.getReasonForRejection());
 			ps.setInt(10, request.getId());
 			ps.executeUpdate();
