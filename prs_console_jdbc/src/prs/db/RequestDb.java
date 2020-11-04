@@ -1,7 +1,6 @@
 package prs.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,20 +13,10 @@ import java.util.List;
 import prs.business.Request;
 import prs.exception.PrsDataException;
 
-public class RequestDb {
+public class RequestDb extends Db {
 
 	public RequestDb() {
 
-	}
-
-	private Connection getConnection() throws SQLException {
-		String dbURL = "jdbc:mysql://localhost:3306/prs?useSSL=false&allowPublicKeyRetrieval=true";
-		String username = "prs_user";
-		String password = "sesame";
-
-		Connection connection = DriverManager.getConnection(dbURL, username, password);
-
-		return connection;
 	}
 
 	private Request getRequestFromResultSet(ResultSet rs) throws SQLException {
@@ -103,7 +92,7 @@ public class RequestDb {
 			ps.setInt(1, request.getUserId());
 			ps.setString(2, request.getDescription());
 			ps.setString(3, request.getJustification());
-			ps.setObject(4, request.getDateNeeded().toString());
+			ps.setString(4, request.getDateNeeded().toString());
 			ps.setString(5, request.getDeliveryMode());
 			ps.setString(6, request.getStatus());
 			ps.setDouble(7, request.getTotal());
@@ -128,7 +117,7 @@ public class RequestDb {
 			ps.setInt(1, request.getUserId());
 			ps.setString(2, request.getDescription());
 			ps.setString(3, request.getJustification());
-			ps.setObject(4, request.getDateNeeded().toString());
+			ps.setString(4, request.getDateNeeded().toString());
 			ps.setString(5, request.getDeliveryMode());
 			ps.setString(6, request.getStatus());
 			ps.setDouble(7, request.getTotal());

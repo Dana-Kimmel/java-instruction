@@ -22,9 +22,6 @@ public class PrsApp {
 		System.out.println("Welcome to the PRS App");
 		System.out.println();
 
-		User authenticatedUser = null;
-		UserDb userDb = new UserDb();
-
 		System.out.println("COMMANDS:");
 
 		System.out.println("login   -  Must login to begin");
@@ -67,157 +64,158 @@ public class PrsApp {
 		System.out.println("exit    - Exit the application");
 		System.out.println();
 
+		User authenticatedUser = null;
+		UserDb userDb = new UserDb();
 		ProductDb productDb = new ProductDb();
 		LineItemDb lineItemDb = new LineItemDb();
 		VendorDb vendorDb = new VendorDb();
-
 		RequestDb requestDb = new RequestDb();
 
 		String command = "";
+
 		while (!command.equalsIgnoreCase("exit")) {
-			command = Console.getString("Enter command: ");
+			try {
+				command = Console.getString("Enter command: ");
 
-			if (command.equalsIgnoreCase("login")) {
-				authenticatedUser = authenticateUser(userDb);
+				if (command.equalsIgnoreCase("login")) {
+					authenticatedUser = authenticateUser(userDb);
 
-				if (authenticatedUser == null) {
-					System.out.println("Username/password not found");
+					if (authenticatedUser == null) {
+						System.out.println("Username/password not found");
+					} else {
+						System.out.println("Welcome, " + authenticatedUser.getFirstName());
+					}
+
+				} else if (command.equalsIgnoreCase("logout")) {
+					authenticatedUser = null;
+				} else if (command.equalsIgnoreCase("exit")) {
+					// nothing to do
+				}
+
+				else if (authenticatedUser != null) {
+
+					switch (command.toLowerCase()) {
+
+					// ***** Product case *****
+
+					case "prod_la":
+						listProducts(productDb);
+						break;
+
+					case "prod_id":
+						getProductById(productDb);
+						break;
+
+					case "prod_ap":
+						addProduct(productDb);
+						break;
+
+					case "prod_up":
+						updateProduct(productDb);
+						break;
+
+					case "prod_dp":
+						deleteProduct(productDb);
+						break;
+					// ***** LineItem case *****
+
+					case "line_la":
+						listLineItems(lineItemDb);
+						break;
+
+					case "line_id":
+						getLineItemById(lineItemDb);
+						break;
+
+					case "line_al":
+						addLineItem(lineItemDb);
+						break;
+
+					case "line-ul":
+						updateLineItem(lineItemDb);
+						break;
+
+					case "line_dl":
+						deleteLineItem(lineItemDb);
+
+						// ***** Vendor case *****
+
+					case "vend_la":
+						listVendors(vendorDb);
+						break;
+
+					case "vend_id":
+						getVendorById(vendorDb);
+						break;
+
+					case "vend_av":
+						addVendor(vendorDb);
+						break;
+
+					case "vend_uv":
+						updateVendor(vendorDb);
+						break;
+
+					case "vend_dv":
+						deleteVendor(vendorDb);
+						break;
+
+					// ***** User case *****
+
+					case "user_la":
+						listUsers(userDb);
+						break;
+
+					case "user_id":
+						getUserById(userDb);
+						break;
+
+					case "user_au":
+						addUser(userDb);
+						break;
+
+					case "user_uu":
+						updateUser(userDb);
+						break;
+
+					case "user_du":
+						deleteUser(userDb);
+						break;
+
+					// ***** Request case *****
+
+					case "requ_la":
+						listRequests(requestDb);
+						break;
+
+					case "requ_id":
+						getRequestById(requestDb);
+						break;
+
+					case "requ_ar":
+						addRequest(requestDb);
+						break;
+
+					case "requ_ur":
+						updateRequest(requestDb);
+						break;
+
+					case "requ_dr":
+						deleteRequest(requestDb);
+						break;
+
+					default:
+						System.out.println("Invalid command");
+						break;
+
+					}
 				} else {
-					System.out.println("Welcome, " + authenticatedUser.getFirstName());
+					System.out.println("Must be logged in");
 				}
-
-			} else if (command.equalsIgnoreCase("logout")) {
-				authenticatedUser = null;
-			} else if (authenticatedUser != null) {
-
-				switch (command.toLowerCase()) {
-
-				case "login":
-					authenticateUser(userDb);
-					break;
-
-				// ***** Product case *****
-
-				case "prod_la":
-					listProducts(productDb);
-					break;
-
-				case "prod_id":
-					getProductById(productDb);
-					break;
-
-				case "prod_ap":
-					addProduct(productDb);
-					break;
-
-				case "prod_up":
-					updateProduct(productDb);
-					break;
-
-				case "prod_dp":
-					deleteProduct(productDb);
-					break;
-				// ***** LineItem case *****
-
-				case "line_la":
-					listLineItems(lineItemDb);
-					break;
-
-				case "line_id":
-					getLineItemById(lineItemDb);
-					break;
-
-				case "line_al":
-					addLineItem(lineItemDb);
-					break;
-
-				case "line-ul":
-					updateLineItem(lineItemDb);
-					break;
-
-				case "line_dl":
-					deleteLineItem(lineItemDb);
-
-					// ***** Vendor case *****
-
-				case "vend_la":
-					listVendors(vendorDb);
-					break;
-
-				case "vend_id":
-					getVendorById(vendorDb);
-					break;
-
-				case "vend_av":
-					addVendor(vendorDb);
-					break;
-
-				case "vend_uv":
-					updateVendor(vendorDb);
-					break;
-
-				case "vend_dv":
-					deleteVendor(vendorDb);
-					break;
-
-				// ***** User case *****
-
-				case "user_la":
-					listUsers(userDb);
-					break;
-
-				case "user_id":
-					getUserById(userDb);
-					break;
-
-				case "user_au":
-					addUser(userDb);
-					break;
-
-				case "user_uu":
-					updateUser(userDb);
-					break;
-
-				case "user_du":
-					deleteUser(userDb);
-					break;
-
-				// ***** Request case *****
-
-				case "requ_la":
-					listRequests(requestDb);
-					break;
-
-				case "requ_id":
-					getRequestById(requestDb);
-					break;
-
-				case "requ_ar":
-					addRequest(requestDb);
-					break;
-
-				case "requ_ur":
-					updateRequest(requestDb);
-					break;
-
-				case "requ_dr":
-					deleteRequest(requestDb);
-					break;
-
-				case "exit":
-					// Nothing to do
-					break;
-
-				default:
-					System.out.println("Invalid command");
-					break;
-
-				}
-			} else {
-				System.out.println("Must be logged in");
+			} catch (Exception e) {
+				System.out.println("Caught exception " + e);
 			}
 		}
-
 	}
 
 	// ********* add Login Method

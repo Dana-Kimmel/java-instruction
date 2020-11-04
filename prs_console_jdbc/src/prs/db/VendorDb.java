@@ -1,7 +1,6 @@
 package prs.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,20 +11,10 @@ import java.util.List;
 import prs.business.Vendor;
 import prs.exception.PrsDataException;
 
-public class VendorDb {
+public class VendorDb extends Db {
 
 	public VendorDb() {
 
-	}
-
-	private Connection getConnection() throws SQLException {
-		String dbURL = "jdbc:mysql://localhost:3306/prs?useSSL=false&allowPublicKeyRetrieval=true";
-		String username = "prs_user";
-		String password = "sesame";
-
-		Connection connection = DriverManager.getConnection(dbURL, username, password);
-
-		return connection;
 	}
 
 	private Vendor getVendorFromResultSet(ResultSet rs) throws SQLException {
