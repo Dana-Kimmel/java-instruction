@@ -60,7 +60,7 @@ public class BmdbApp {
 				break;
 
 			case "ua":
-				updateActor();
+				updateActor(actorDb);
 
 				break;
 
@@ -181,7 +181,7 @@ public class BmdbApp {
 
 	}
 
-	private static void updateActor()
+	private static void updateActor(ActorDb adb)
 
 	{
 		long updId = Console.getInt("ID: ");
@@ -193,7 +193,7 @@ public class BmdbApp {
 
 		Actor updActor = new Actor(updId, updFirstName, updLastName, updGender, updBirthDate);
 
-		if (actorDb.update(updActor)) {
+		if (adb.update(updActor)) {
 			System.out.println("Actor added successfully");
 
 		} else {

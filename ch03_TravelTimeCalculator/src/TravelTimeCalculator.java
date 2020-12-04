@@ -28,9 +28,10 @@ public class TravelTimeCalculator {
 
 			System.out.println("Continue (y/n): ");
 			choice = sc.next();
+			sc.close();
 
-			System.out.println("Goodbye:)");
 		}
+		System.out.println("Goodbye:)");
 	}
 
 }
