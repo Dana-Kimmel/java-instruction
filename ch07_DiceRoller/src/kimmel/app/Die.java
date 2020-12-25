@@ -21,7 +21,8 @@ public class Die {
 
 	// helper method to roll die
 	public void roll() {
-		int die = (int) (Math.random() * 6) + 1;
+		die = (int) (Math.random() * 6) + 1;
+
 	}
 
 }
