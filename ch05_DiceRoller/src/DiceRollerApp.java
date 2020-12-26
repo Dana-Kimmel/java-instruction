@@ -1,5 +1,6 @@
 
 public class DiceRollerApp {
+
 	private static int getDiceRoll() {
 		int diceRoll = (int) (Math.random() * 6) + 1;
 		return diceRoll;
@@ -22,5 +23,4 @@ public class DiceRollerApp {
 
 		System.out.println(message);
 	}
-
 }
